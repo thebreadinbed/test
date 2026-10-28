@@ -2,10 +2,4 @@
 title: "test"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+Context : Car dependence is a feedback loop. Accessibility by car spreads activities out: dispersed development requires more driving, and more driving generates demand for more road capacity. Transport-side accounts (source) and land-use accounts (Solow, Arnott and MacKinnon, Newman and Kenworthy) describe the same loop. The land-use account matters most here because street space is a zero-sum allocation. Road space given to cars is taken from housing, shops, and public space.
