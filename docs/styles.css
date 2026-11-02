@@ -1,1 +1,175 @@
-/* css styles */
+
+/* ==========================================
+   1. OVERALL PAGE
+========================================== */
+
+body {
+  background-color: #fafaf7;
+  color: #263b35;
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.3;
+  padding-top: 0 !important;
+}
+
+/* Justify paragraph text */
+p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+}
+
+
+/* ==========================================
+   2. NAVIGATION BAR
+========================================== */
+
+.navbar {
+  position: relative !important;
+  top: auto !important;
+  width: 100%;
+  height: auto !important;
+  background: #214c3b !important;
+  background-image: none !important;
+  padding: 0.75rem 1.5rem;
+  box-shadow: none;
+}
+
+/* Navigation links */
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: white !important;
+}
+
+.navbar .nav-link:hover {
+  color: #d6e4da !important;
+}
+
+
+/* ==========================================
+   3. STATIC IMAGE BANNER
+========================================== */
+
+.page-banner {
+  width: 100vw;
+  height: 300px;
+
+  /* Extend beyond Quarto content margins */
+  margin-left: calc(50% - 50vw);
+
+  background-image: url("images/Nouveau_projet4.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Responsive banner */
+@media (max-width: 768px) {
+  .page-banner {
+    height: 180px;
+  }
+}
+
+
+/* ==========================================
+   4. MAIN TITLE
+========================================== */
+
+h1.title {
+  font-size: 2.8rem;
+  font-weight: 750;
+  color: #214c3b;
+  max-width: 850px;
+}
+
+
+/* ==========================================
+   5. SECTION HEADINGS
+========================================== */
+
+h2 {
+  color: #245640;
+  font-size: 1.8rem;
+  margin-top: 3rem;
+  border-bottom: 1px solid #d6e2d9;
+  padding-bottom: 0.6rem;
+}
+
+h3 {
+  color: #365c4a;
+}
+
+
+/* ==========================================
+   6. EXPANDABLE INFORMATION BOXES
+========================================== */
+
+.callout {
+  border-radius: 12px;
+  margin: 1.4rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
+}
+
+
+/* ==========================================
+   7. INTERACTIVE TABS
+========================================== */
+
+.nav-tabs {
+  border-bottom: 2px solid #d6e4da;
+  gap: 0.5rem;
+}
+
+.nav-tabs .nav-link {
+  color: #466c58;
+  border-radius: 8px 8px 0 0;
+  padding: 0.75rem 1.2rem;
+}
+
+.nav-tabs .nav-link.active {
+  background: #e1eee5;
+  color: #214c3b;
+  font-weight: 650;
+}
+
+.tab-content {
+  background: white;
+  border: 1px solid #e0e8e2;
+  border-radius: 0 0 12px 12px;
+  padding: 1.5rem;
+}
+
+
+/* ==========================================
+   8. TABLES
+========================================== */
+
+table {
+  background: white;
+}
+
+thead {
+  background: #e3eee7;
+}
+
+
+/* ==========================================
+   9. TWO-COLUMN COMPARISONS
+========================================== */
+
+.columns {
+  margin: 1.5rem 0;
+}
+
+.column {
+  padding: 0.5rem 1rem;
+}
+
+/* Space between navbar and page title */
+#title-block-header {
+  margin-top: 60px !important;
+}

@@ -1,14 +1,19 @@
+
 project:
   type: website
   output-dir: docs
+  resources:
+    - node_place.gif
+    - Media2_O1_11_02.gif
+    - images/Nouveau_projet4.png
 
 website:
-  title: "test"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - text: "Français"
+        href: about.qmd
+      - text: "English"
+        href: index.qmd
 
 format:
   html:
@@ -19,4 +24,3 @@ format:
     toc: true
 
 editor: visual
-
