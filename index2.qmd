@@ -1,0 +1,181 @@
+---
+title: "questions"
+format: revealjs
+editor: visual
+---
+
+## Planification stratégique et occasions locales
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+library(plotly)
+library(dplyr)
+library(tibble)
+
+cases <- tribble(
+  ~id, ~case, ~x, ~y, ~region, ~trajectory,
+   1, "Paris — Plan Vélo",                 2.0, 9.1, "Europe", "Transition programmée",
+   2, "Paris — coronapistes",              8.7, 8.2, "Europe", "Transition programmée",
+   3, "Amsterdam — politique cyclable",    2.1, 9.2, "Europe", "Institutionnalisée",
+   4, "Barcelone — superilles",            3.4, 8.4, "Europe", "Transition programmée",
+   5, "Gand — plan de circulation",        2.6, 8.7, "Europe", "Institutionnalisée",
+   6, "Oslo — centre-ville",               2.7, 8.6, "Europe", "Transition programmée",
+   7, "Londres — Streetspace",             8.5, 7.1, "Europe", "Mixte",
+   8, "Londres — LTNs",                     7.2, 6.6, "Europe", "Mixte",
+   9, "Berlin — pistes temporaires",       9.1, 5.2, "Europe", "Mixte",
+  10, "Lyon — coronapistes",               8.6, 6.3, "Europe", "Transition programmée",
+  11, "Montréal — plan cyclable 2017",     2.7, 8.1, "Amérique du Nord", "Transition programmée",
+  12, "Montréal — REV Saint-Denis",        6.5, 8.1, "Amérique du Nord", "Transition programmée",
+  13, "Montréal — rues COVID",             8.8, 4.0, "Amérique du Nord", "Transition programmée",
+  14, "Toronto — Cycling Network Plan",   3.5, 8.4, "Amérique du Nord", "Transition programmée",
+  15, "Toronto — Bloor/Danforth",          6.9, 7.6, "Amérique du Nord", "Transition programmée",
+  16, "Toronto/Hamilton — pratiques",      8.6, 7.1, "Amérique du Nord", "Non classée",
+  17, "Vancouver — plan cyclable",         3.2, 7.9, "Amérique du Nord", "Transition programmée",
+  18, "Vancouver — Slow Streets",          8.6, 3.5, "Amérique du Nord", "Transition programmée",
+  19, "New York — Open Streets",           9.2, 4.2, "Amérique du Nord", "Non classée",
+  20, "New York — Broadway",               3.8, 7.7, "Amérique du Nord", "Non classée",
+  21, "Portland — réseau cyclable",        5.2, 7.6, "Amérique du Nord", "Non classée",
+  22, "Seattle — Greenways",               4.2, 7.4, "Amérique du Nord", "Non classée",
+  23, "San Francisco — JFK Drive",         8.3, 6.3, "Amérique du Nord", "Non classée",
+  24, "Oakland — Slow Streets",            9.1, 3.4, "Amérique du Nord", "Non classée"
+)
+
+colors <- c(
+  "Europe" = "#087F5B",
+  "Amérique du Nord" = "#1864AB"
+)
+
+symbols <- c(
+  "Institutionnalisée" = "circle",
+  "Transition programmée" = "square",
+  "Mixte" = "triangle-up",
+  "Non classée" = "diamond-open"
+)
+
+cases <- cases %>%
+  mutate(
+    tooltip = paste0(
+      "<b>", case, "</b>",
+      "<br>Région : ", region,
+      "<br>Trajectoire : ", trajectory,
+      "<br>Planification : ", y, "/10",
+      "<br>Occasions locales : ", x, "/10"
+    )
+  )
+
+p <- plot_ly()
+
+# Quadrant backgrounds
+quadrants <- list(
+  list(x0=0, x1=5, y0=5, y1=10, fill="#E0F2E9"),
+  list(x0=5, x1=10, y0=5, y1=10, fill="#E3EFFB"),
+  list(x0=0, x1=5, y0=0, y1=5, fill="#F1F3F5"),
+  list(x0=5, x1=10, y0=0, y1=5, fill="#FFF0DF")
+)
+
+for (q in quadrants) {
+  p <- p %>% layout(
+    shapes = c(
+      p$x$layout$shapes,
+      list(list(
+        type = "rect",
+        x0 = q$x0, x1 = q$x1,
+        y0 = q$y0, y1 = q$y1,
+        fillcolor = q$fill,
+        line = list(width = 0),
+        layer = "below"
+      ))
+    )
+  )
+}
+
+# One trace per region × trajectory
+for (r in unique(cases$region)) {
+  for (t in unique(cases$trajectory)) {
+
+    df <- cases %>%
+      filter(region == r, trajectory == t)
+
+    if (nrow(df) == 0) next
+
+    p <- p %>% add_trace(
+      data = df,
+      x = ~x,
+      y = ~y,
+      type = "scatter",
+      mode = "markers+text",
+      text = ~id,
+      textposition = "middle center",
+      textfont = list(color = "white", size = 10),
+      hovertext = ~tooltip,
+      hoverinfo = "text",
+      name = paste(r, "—", t),
+      marker = list(
+        size = 24,
+        color = colors[[r]],
+        symbol = symbols[[t]],
+        line = list(color = "#FFFFFF", width = 1.5)
+      ),
+      showlegend = TRUE
+    )
+  }
+}
+
+p <- p %>% layout(
+  title = list(
+    text = "Planification stratégique et occasions locales",
+    font = list(size = 20)
+  ),
+
+  xaxis = list(
+    title = "Influence des occasions locales →",
+    range = c(0, 10),
+    zeroline = FALSE,
+    gridcolor = "rgba(0,0,0,0.05)"
+  ),
+
+  yaxis = list(
+    title = "Rôle de la planification stratégique →",
+    range = c(0, 10),
+    zeroline = FALSE,
+    gridcolor = "rgba(0,0,0,0.05)"
+  ),
+
+  shapes = c(
+    p$x$layout$shapes,
+    list(
+      list(type="line", x0=5, x1=5, y0=0, y1=10,
+           line=list(color="#868E96", dash="dash")),
+      list(type="line", x0=0, x1=10, y0=5, y1=5,
+           line=list(color="#868E96", dash="dash"))
+    )
+  ),
+
+  annotations = list(
+    list(x=2.5, y=9.8, text="<b>Sélection stratégique</b>",
+         showarrow=FALSE),
+    list(x=7.5, y=9.8, text="<b>Stratégie + occasions</b>",
+         showarrow=FALSE),
+    list(x=2.5, y=4.5, text="<b>Sélection ponctuelle</b>",
+         showarrow=FALSE),
+    list(x=7.5, y=4.5, text="<b>Sélection opportuniste</b>",
+         showarrow=FALSE)
+  ),
+
+  legend = list(
+    orientation = "h",
+    x = 0,
+    y = -0.25
+  ),
+
+  paper_bgcolor = "rgba(0,0,0,0)",
+  plot_bgcolor = "rgba(0,0,0,0)",
+
+  margin = list(l=70, r=30, t=70, b=110)
+)
+
+p
+```
